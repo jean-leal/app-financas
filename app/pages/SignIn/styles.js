@@ -18,7 +18,9 @@ export const Logo = styled.Image`
 export const AreaInput = styled.View`
   flex-direction: row;
 `;
-export const Input = styled.TextInput`
+export const Input = styled.TextInput.attrs({
+  placeholderTextColor: '#C0C0C0'
+})`
   background: #fff;
   width: 90%;
   font-size: 17px;
@@ -26,6 +28,7 @@ export const Input = styled.TextInput`
   border-radius: 8px;
   color: #121212;
   margin-bottom: 15px;
+  
 `;
 
 export const SubmitButton = styled.TouchableOpacity`

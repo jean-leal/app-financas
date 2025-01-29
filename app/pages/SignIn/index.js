@@ -1,5 +1,5 @@
-import React from "react";
-import { Platform } from "react-native";
+import React, {useContext} from "react";
+import { Platform, View, TouchableOpacity, Text } from "react-native";
 
 import { 
   Background,
@@ -14,12 +14,15 @@ import {
 } from "./styles";
 
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../contexts/auth";
+
 
 
 export default function SignIn() {
   const navigation = useNavigation();
 
   return (
+    
     <Background>
       <Container
         behavior={Platform.OS === "ios" ? "padding" : ""}
