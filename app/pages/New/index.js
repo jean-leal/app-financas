@@ -4,7 +4,7 @@ import { Background, Input, SubmitButton, SubmitText } from './styles';
 import { SafeAreaView, TouchableWithoutFeedback, Keyboard} from "react-native";
 
 import Header from "../../components/Header";
-import { keyframes } from "styled-components";
+import RegisterTypes from "../../components/RegisterTypes";
 
 export default function New() {
   const [labelInput, setLabelInput] = useState('');
@@ -15,7 +15,7 @@ export default function New() {
     <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
       <Background>
         <Header title="Resgistrando" />
-        <SafeAreaView style={{ marginTop: 12, alignItems: 'center' }}>
+        <SafeAreaView style={{ marginTop: 12, alignItems: 'center'}}>
           <Input
             placeholder='Descrição desse registro'
             value={labelInput}
@@ -28,6 +28,8 @@ export default function New() {
             value={valueInput}
             onChangeText={(text) => setValueInput(text)}
           />
+
+          <RegisterTypes type={type} sendTypeChanged={(item)=> setType(item)}/>
 
           <SubmitButton>
             <SubmitText>Registrar</SubmitText>
