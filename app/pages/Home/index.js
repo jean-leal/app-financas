@@ -17,7 +17,7 @@ export default function () {
   const [listBalance, setListBalance] = useState([]);
   const [moviments, setMoviments] = useState([]);
 
-  const [dateMovements, seDateMovementes] = useState(new Date());
+  const [dateMovements, setDateMovementes] = useState(new Date());
 
   useEffect(() => {
     let isActive = true;
@@ -46,8 +46,21 @@ export default function () {
     getMovements();
 
     return () => isActive = false;
-  }, [isFocused])
+  }, [isFocused, dateMovements])
 
+  async function handleDelete(id) {
+    try{
+      await api.delete('/receives/delete', {
+        params:{
+          item_id: id
+        }
+      })
+      setDateMovementes(new Date())
+    } catch (err){
+      console.error(err)
+    }
+    
+  }
 
   return (
     <Background>
@@ -68,7 +81,7 @@ export default function () {
       <List
         data={moviments}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <HistoricoList data={item} />}
+        renderItem={({ item }) => <HistoricoList data={item} deleteItem={handleDelete}/>}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20}}
       />
