@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Modal } from "react-native";
 
 import { format } from "date-fns";
 import { useIsFocused } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import Header from "../../components/Header";
 import api from "../../services/api";
 import BalanceItem from "../../components/BalanceItem";
 import HistoricoList from "../../components/HistoricoList";
+import CalendarModal from "../../components/CalendarModal";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,6 +17,7 @@ export default function () {
   const isFocused = useIsFocused();
   const [listBalance, setListBalance] = useState([]);
   const [moviments, setMoviments] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false)
 
   const [dateMovements, setDateMovementes] = useState(new Date());
 
@@ -73,7 +75,7 @@ export default function () {
         renderItem={({ item }) => (<BalanceItem data={item} />)}
       />
       <Area>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> setModalVisible(true)}>
           <Ionicons name="calendar-outline" size={30} color="#121212" />
         </TouchableOpacity>
         <Title> Ultimas movimentações</Title>
@@ -85,6 +87,15 @@ export default function () {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20}}
       />
+      <Modal 
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}      
+      >
+        <CalendarModal
+          setVisible={()=> setModalVisible(false)}
+        />
+      </Modal>
     </Background>
   )
 }
