@@ -6,6 +6,8 @@ import { RegisterConatainer, RegisterTypeButton, RegisterLabel } from "./styles"
 export default function RegisterTypes({ type, sendTypeChanged }) {
   const [typeChecked, setTypeChecked] = useState(type);
 
+
+  // marca o tipo, se e "receita" ou "despesa"
   function changeType(name) {
     sendTypeChanged(name)
     setTypeChecked(name)

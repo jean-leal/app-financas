@@ -12,6 +12,7 @@ import { TouchableWithoutFeedback, Alert } from 'react-native';
 
 export default function HistoricoList({ data, deleteItem }) {
 
+  // deletar um registro, é utilizado o longPress para mostrar essa tela. 
   function handleDeleteItem() {
     Alert.alert(
       'Atenção',

@@ -25,14 +25,19 @@ export default function () {
     let isActive = true;
 
     async function getMovements() {
-      const dateFormated = format(dateMovements, 'dd/MM/yyyy');
+      //corrigindo o timezone, para vir zerado e nao causar preocupações depois. 
+      const date = new Date(dateMovements);
+      const onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
+      const dateFormated = format(onlyDate, 'dd/MM/yyyy')
 
+      // buscando as informações de movimentações considerando a data passada em "dateFormated"
       const receives = await api.get('/receives', {
         params: {
           date: dateFormated
         }
       })
 
+      //listando saldo atual, receita e despesas diarias. 
       const balance = await api.get('/balance', {
         params: {
           date: dateFormated
@@ -50,18 +55,24 @@ export default function () {
     return () => isActive = false;
   }, [isFocused, dateMovements])
 
+  // deletar movimentacao passando o id 
   async function handleDelete(id) {
-    try{
+    try {
       await api.delete('/receives/delete', {
-        params:{
+        params: {
           item_id: id
         }
       })
       setDateMovementes(new Date())
-    } catch (err){
+    } catch (err) {
       console.error(err)
     }
-    
+
+  }
+
+  // passando a data selecinada para o filtro de movimentacao 
+  function filterDateMovements(dateSelected) {
+    setDateMovementes(dateSelected)
   }
 
   return (
@@ -75,7 +86,7 @@ export default function () {
         renderItem={({ item }) => (<BalanceItem data={item} />)}
       />
       <Area>
-        <TouchableOpacity onPress={()=> setModalVisible(true)}>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Ionicons name="calendar-outline" size={30} color="#121212" />
         </TouchableOpacity>
         <Title> Ultimas movimentações</Title>
@@ -83,17 +94,18 @@ export default function () {
       <List
         data={moviments}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <HistoricoList data={item} deleteItem={handleDelete}/>}
+        renderItem={({ item }) => <HistoricoList data={item} deleteItem={handleDelete} />}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 20}}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
-      <Modal 
+      <Modal
         visible={modalVisible}
         animationType="fade"
-        transparent={true}      
+        transparent={true}
       >
         <CalendarModal
-          setVisible={()=> setModalVisible(false)}
+          setVisible={() => setModalVisible(false)}
+          handleFilter={filterDateMovements}
         />
       </Modal>
     </Background>
